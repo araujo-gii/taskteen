@@ -51,3 +51,11 @@ select:focus {
 a {
   font-family: "Nunito", sans-serif;
 }
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #ffd93d;
+  outline-offset: 2px;
+}

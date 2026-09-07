@@ -57,6 +57,7 @@ function Materias() {
           placeholder="Nome da matéria (ex: Matemática)"
           value={nomeNovo}
           onChange={(e) => setNomeNovo(e.target.value)}
+          aria-label="Nome da nova matéria"
           style={{ flex: 1, padding: "8px" }}
         />{" "}
         <button type="submit">Adicionar</button>{" "}
@@ -95,7 +96,12 @@ function Materias() {
           >
             {" "}
             <strong>{materia.nome}</strong>{" "}
-            <button onClick={() => apagarMateria(materia.id)}>🗑️</button>{" "}
+            <button
+              onClick={() => apagarMateria(materia.id)}
+              aria-label={`Apagar matéria ${materia.nome}`}
+            >
+              🗑️
+            </button>
           </div>{" "}
           <p>
             {" "}
@@ -116,9 +122,13 @@ function Materias() {
               onChange={(e) =>
                 setNotaInput({ ...notaInput, [materia.id]: e.target.value })
               }
+              aria-label={`Nota para ${materia.nome}`}
               style={{ width: "100px", padding: "6px" }}
             />{" "}
-            <button onClick={() => adicionarNota(materia.id)}>
+            <button
+              onClick={() => adicionarNota(materia.id)}
+              aria-label={`Lançar nota para ${materia.nome}`}
+            >
               Lançar nota
             </button>{" "}
           </div>{" "}

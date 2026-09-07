@@ -66,6 +66,7 @@ function Tarefas() {
             placeholder="O que você precisa fazer?"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
+            aria-label="Título da tarefa"
             style={{ width: "100%", padding: "8px" }}
           />
         </div>
@@ -74,6 +75,7 @@ function Tarefas() {
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
+            aria-label="Categoria da tarefa"
           >
             <option value="tarefa">Tarefa escolar</option>
             <option value="trabalho">Trabalho pra entregar</option>
@@ -85,6 +87,7 @@ function Tarefas() {
             type="date"
             value={data}
             onChange={(e) => setData(e.target.value)}
+            aria-label="Data da tarefa"
           />
         </div>
 
@@ -115,11 +118,18 @@ function Tarefas() {
                 type="checkbox"
                 checked={!!tarefa.feito}
                 onChange={() => alternarFeito(tarefa.id, tarefa.feito)}
+                aria-label={`Marcar "${tarefa.titulo}" como feita`}
               />
               <span style={{ flex: 1 }}>
                 {tarefa.titulo} ({tarefa.categoria}) - {tarefa.data}
               </span>
-              <button onClick={() => apagarTarefa(tarefa.id)}>🗑️</button>
+
+              <button
+                onClick={() => apagarTarefa(tarefa.id)}
+                aria-label={`Apagar tarefa "${tarefa.titulo}"`}
+              >
+                🗑️
+              </button>
             </li>
           ))}
         </ul>

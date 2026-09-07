@@ -61,19 +61,21 @@ function App() {
             })}
           >
             {" "}
-            <span style={{ fontSize: "20px" }}>{aba.icone}</span>{" "}
+            <span style={{ fontSize: "20px" }} aria-hidden="true">
+              {aba.icone}
+            </span>{" "}
             {aba.label}{" "}
           </NavLink>
         ))}{" "}
       </nav>{" "}
-      <Routes>
+      <main> <Routes>
         {" "}
         <Route path="/" element={<Inicio />} />{" "}
         <Route path="/agenda" element={<Agenda />} />{" "}
         <Route path="/materias" element={<Materias />} />{" "}
         <Route path="/tarefas" element={<Tarefas />} />{" "}
         <Route path="/perfil" element={<Perfil />} />{" "}
-      </Routes>{" "}
+      </Routes> </main>{" "}
     </BrowserRouter>
   );
 }

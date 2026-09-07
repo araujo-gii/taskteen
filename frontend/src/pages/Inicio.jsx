@@ -51,10 +51,25 @@ function Inicio() {
       </p>
 
       {clima && (
-        <div style={{ background: "#2a2a2a", padding: "10px 14px", borderRadius: "8px", margin: "10px 0" }}>
-          <p style={{ margin: 0 }}>{clima.descricao} — {Math.round(clima.temperatura)}°C</p>
+        <div
+          style={{
+            background: "#2a2a2a",
+            padding: "10px 14px",
+            borderRadius: "8px",
+            margin: "10px 0",
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            {clima.descricao} — {Math.round(clima.temperatura)}°C
+          </p>
           {tarefasDeHoje.some((t) => t.categoria === "esporte") && (
-            <p style={{ margin: "4px 0 0", fontSize: "14px", color: clima.bomParaEsporte ? "#5CB85C" : "#D9534F" }}>
+            <p
+              style={{
+                margin: "4px 0 0",
+                fontSize: "14px",
+                color: clima.bomParaEsporte ? "#5CB85C" : "#D9534F",
+              }}
+            >
               {clima.bomParaEsporte
                 ? "✅ Bom dia pra treinar ao ar livre!"
                 : "⚠️ Talvez seja melhor treinar em local coberto hoje."}
@@ -65,7 +80,14 @@ function Inicio() {
 
       {total > 0 && (
         <div style={{ margin: "16px 0" }}>
-          <div style={{ background: "#333", borderRadius: "8px", overflow: "hidden", height: "16px" }}>
+          <div
+            style={{
+              background: "#333",
+              borderRadius: "8px",
+              overflow: "hidden",
+              height: "16px",
+            }}
+          >
             <div
               style={{
                 width: `${(feitas / total) * 100}%`,
@@ -104,6 +126,7 @@ function Inicio() {
                 type="checkbox"
                 checked={!!tarefa.feito}
                 onChange={() => alternarFeito(tarefa.id, tarefa.feito)}
+                aria-label={`Marcar "${tarefa.titulo}" como feita`}
               />
               <span>
                 {tarefa.titulo} ({tarefa.categoria})

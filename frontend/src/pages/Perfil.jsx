@@ -97,6 +97,7 @@ function Perfil() {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           placeholder="Como quer ser chamado(a)?"
+          aria-label="Seu nome"
           style={{ width: "100%", padding: "8px" }}
         />{" "}
       </div>{" "}

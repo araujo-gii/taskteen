@@ -4,42 +4,67 @@ import Agenda from "./pages/Agenda";
 import Materias from "./pages/Materias";
 import Tarefas from "./pages/Tarefas";
 import Perfil from "./pages/Perfil";
-const linkStyle = ({ isActive }) => ({
-  padding: "10px 16px",
-  textDecoration: "none",
-  color: isActive ? "#fff" : "#ccc",
-  background: isActive ? "#4A90D9" : "transparent",
-  borderRadius: "8px",
-  fontWeight: isActive ? "bold" : "normal",
-});
+const abas = [
+  { to: "/", label: "Início", icone: "🏠", fim: true },
+  { to: "/agenda", label: "Agenda", icone: "📅" },
+  { to: "/materias", label: "Matérias", icone: "📚" },
+  { to: "/tarefas", label: "Tarefas", icone: "✅" },
+  { to: "/perfil", label: "Perfil", icone: "👤" },
+];
 function App() {
   return (
     <BrowserRouter>
       {" "}
-      <nav
+      <header
         style={{
-          display: "flex",
-          gap: "8px",
-          padding: "12px",
-          borderBottom: "1px solid #444",
+          background: "linear-gradient(90deg, #6C5CE7, #a29bfe)",
+          padding: "16px 20px",
+          textAlign: "center",
         }}
       >
         {" "}
-        <NavLink to="/" style={linkStyle} end>
-          Início
-        </NavLink>{" "}
-        <NavLink to="/agenda" style={linkStyle}>
-          Agenda
-        </NavLink>{" "}
-        <NavLink to="/materias" style={linkStyle}>
-          Matérias
-        </NavLink>{" "}
-        <NavLink to="/tarefas" style={linkStyle}>
-          Tarefas
-        </NavLink>{" "}
-        <NavLink to="/perfil" style={linkStyle}>
-          Perfil
-        </NavLink>{" "}
+        <h1 style={{ margin: 0, color: "white", fontSize: "26px" }}>
+          🌟 TaskTeen
+        </h1>{" "}
+      </header>{" "}
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          padding: "10px",
+          background: "#23233a",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          flexWrap: "wrap",
+          gap: "6px",
+        }}
+      >
+        {" "}
+        {abas.map((aba) => (
+          <NavLink
+            key={aba.to}
+            to={aba.to}
+            end={aba.fim}
+            style={({ isActive }) => ({
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "8px 14px",
+              textDecoration: "none",
+              color: isActive ? "white" : "#aaa",
+              background: isActive ? "#6C5CE7" : "transparent",
+              borderRadius: "12px",
+              fontWeight: isActive ? "bold" : "normal",
+              fontSize: "13px",
+              minWidth: "60px",
+            })}
+          >
+            {" "}
+            <span style={{ fontSize: "20px" }}>{aba.icone}</span>{" "}
+            {aba.label}{" "}
+          </NavLink>
+        ))}{" "}
       </nav>{" "}
       <Routes>
         {" "}

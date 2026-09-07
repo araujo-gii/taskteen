@@ -1,129 +1,55 @@
-import { useState, useEffect } from "react";
-
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import Inicio from "./pages/Inicio";
+import Agenda from "./pages/Agenda";
+import Materias from "./pages/Materias";
+import Tarefas from "./pages/Tarefas";
+import Perfil from "./pages/Perfil";
+const linkStyle = ({ isActive }) => ({
+  padding: "10px 16px",
+  textDecoration: "none",
+  color: isActive ? "#fff" : "#ccc",
+  background: isActive ? "#4A90D9" : "transparent",
+  borderRadius: "8px",
+  fontWeight: isActive ? "bold" : "normal",
+});
 function App() {
-  const [tarefas, setTarefas] = useState([]);
-  const [titulo, setTitulo] = useState("");
-  const [categoria, setCategoria] = useState("tarefa");
-  const [data, setData] = useState("");
-
-  function carregarTarefas() {
-    fetch("http://localhost:3001/api/tarefas")
-      .then((res) => res.json())
-      .then((dados) => setTarefas(dados));
-  }
-
-  useEffect(() => {
-    carregarTarefas();
-  }, []);
-
-  function alternarFeito(id, feitoAtual) {
-    fetch(`http://localhost:3001/api/tarefas/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ feito: feitoAtual ? 0 : 1 }),
-    }).then(() => carregarTarefas());
-  }
-  function apagarTarefa(id) {
-    fetch(`http://localhost:3001/api/tarefas/${id}`, { method: "DELETE" }).then(
-      () => carregarTarefas(),
-    );
-  }
-  const cores = {
-    tarefa: "#4A90D9",
-    trabalho: "#D9534F",
-    esporte: "#5CB85C",
-    lazer: "#F0AD4E",
-  };
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!titulo || !data) {
-      alert("Preencha pelo menos o título e a data!");
-      return;
-    }
-
-    fetch("http://localhost:3001/api/tarefas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ titulo, categoria, data }),
-    }).then(() => {
-      setTitulo("");
-      setData("");
-      carregarTarefas();
-    });
-  }
-
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial", maxWidth: "500px" }}>
-      <h1>Minhas Tarefas de Hoje</h1>
-
-      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="text"
-            placeholder="O que você precisa fazer?"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            style={{ width: "100%", padding: "8px" }}
-          />
-        </div>
-
-        <div style={{ marginBottom: "10px", display: "flex", gap: "10px" }}>
-          <select
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-          >
-            <option value="tarefa">Tarefa escolar</option>
-            <option value="trabalho">Trabalho pra entregar</option>
-            <option value="esporte">Esporte</option>
-            <option value="lazer">Folga/Lazer</option>
-          </select>
-
-          <input
-            type="date"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-          />
-        </div>
-
-        <button type="submit" style={{ padding: "8px 16px" }}>
-          Adicionar Tarefa
-        </button>
-      </form>
-
-            {tarefas.length === 0 ? (
-        <p>Nenhuma tarefa ainda.</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {tarefas.map((tarefa) => (
-            <li
-              key={tarefa.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '8px',
-                marginBottom: '6px',
-                borderLeft: `5px solid ${cores[tarefa.categoria] || '#999'}`,
-                textDecoration: tarefa.feito ? 'line-through' : 'none',
-                opacity: tarefa.feito ? 0.6 : 1,
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={!!tarefa.feito}
-                onChange={() => alternarFeito(tarefa.id, tarefa.feito)}
-              />
-              <span style={{ flex: 1 }}>
-                {tarefa.titulo} ({tarefa.categoria}) - {tarefa.data}
-              </span>
-              <button onClick={() => apagarTarefa(tarefa.id)}>🗑️</button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <BrowserRouter>
+      {" "}
+      <nav
+        style={{
+          display: "flex",
+          gap: "8px",
+          padding: "12px",
+          borderBottom: "1px solid #444",
+        }}
+      >
+        {" "}
+        <NavLink to="/" style={linkStyle} end>
+          Início
+        </NavLink>{" "}
+        <NavLink to="/agenda" style={linkStyle}>
+          Agenda
+        </NavLink>{" "}
+        <NavLink to="/materias" style={linkStyle}>
+          Matérias
+        </NavLink>{" "}
+        <NavLink to="/tarefas" style={linkStyle}>
+          Tarefas
+        </NavLink>{" "}
+        <NavLink to="/perfil" style={linkStyle}>
+          Perfil
+        </NavLink>{" "}
+      </nav>{" "}
+      <Routes>
+        {" "}
+        <Route path="/" element={<Inicio />} />{" "}
+        <Route path="/agenda" element={<Agenda />} />{" "}
+        <Route path="/materias" element={<Materias />} />{" "}
+        <Route path="/tarefas" element={<Tarefas />} />{" "}
+        <Route path="/perfil" element={<Perfil />} />{" "}
+      </Routes>{" "}
+    </BrowserRouter>
   );
 }
-
 export default App;

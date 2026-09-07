@@ -112,6 +112,39 @@ app.post("/api/notas", (req, res) => {
   res.json({ id: resultado.lastInsertRowid, materia_id, valor, bimestre });
 });
 
+app.get('/api/clima', async (req, res) => {
+  try {
+    const resposta = await fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=-22.01&longitude=-47.89&current=temperature_2m,weathercode&timezone=America%2FSao_Paulo'
+    );
+    const dados = await resposta.json();
+
+    const codigo = dados.current.weathercode;
+    const temperatura = dados.current.temperature_2m;
+
+    let descricao = 'Tempo indefinido';
+    let bomParaEsporte = true;
+
+    if (codigo === 0) {
+      descricao = 'Céu limpo ☀️';
+    } else if ([1, 2, 3].includes(codigo)) {
+      descricao = 'Parcialmente nublado ⛅';
+    } else if ([45, 48].includes(codigo)) {
+      descricao = 'Neblina 🌫️';
+    } else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(codigo)) {
+      descricao = 'Chuva 🌧️';
+      bomParaEsporte = false;
+    } else if ([95, 96, 99].includes(codigo)) {
+      descricao = 'Tempestade ⛈️';
+      bomParaEsporte = false;
+    }
+
+    res.json({ temperatura, descricao, bomParaEsporte });
+  } catch (erro) {
+    res.status(500).json({ erro: 'Não foi possível buscar o clima' });
+  }
+});
+
 app.get("/api/health", (req, res) => {
   res.json({
     status: "ok",

@@ -7,7 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = new Database("taskteen.db");
+const db = new Database(
+  process.env.NODE_ENV === "test" ? ":memory:" : "taskteen.db",
+);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS tarefas (
@@ -112,36 +114,36 @@ app.post("/api/notas", (req, res) => {
   res.json({ id: resultado.lastInsertRowid, materia_id, valor, bimestre });
 });
 
-app.get('/api/clima', async (req, res) => {
+app.get("/api/clima", async (req, res) => {
   try {
     const resposta = await fetch(
-      'https://api.open-meteo.com/v1/forecast?latitude=-22.01&longitude=-47.89&current=temperature_2m,weathercode&timezone=America%2FSao_Paulo'
+      "https://api.open-meteo.com/v1/forecast?latitude=-22.01&longitude=-47.89&current=temperature_2m,weathercode&timezone=America%2FSao_Paulo",
     );
     const dados = await resposta.json();
 
     const codigo = dados.current.weathercode;
     const temperatura = dados.current.temperature_2m;
 
-    let descricao = 'Tempo indefinido';
+    let descricao = "Tempo indefinido";
     let bomParaEsporte = true;
 
     if (codigo === 0) {
-      descricao = 'Céu limpo ☀️';
+      descricao = "Céu limpo ☀️";
     } else if ([1, 2, 3].includes(codigo)) {
-      descricao = 'Parcialmente nublado ⛅';
+      descricao = "Parcialmente nublado ⛅";
     } else if ([45, 48].includes(codigo)) {
-      descricao = 'Neblina 🌫️';
+      descricao = "Neblina 🌫️";
     } else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(codigo)) {
-      descricao = 'Chuva 🌧️';
+      descricao = "Chuva 🌧️";
       bomParaEsporte = false;
     } else if ([95, 96, 99].includes(codigo)) {
-      descricao = 'Tempestade ⛈️';
+      descricao = "Tempestade ⛈️";
       bomParaEsporte = false;
     }
 
     res.json({ temperatura, descricao, bomParaEsporte });
   } catch (erro) {
-    res.status(500).json({ erro: 'Não foi possível buscar o clima' });
+    res.status(500).json({ erro: "Não foi possível buscar o clima" });
   }
 });
 
@@ -153,7 +155,10 @@ app.get("/api/health", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log("✅ Banco de dados SQLite pronto (arquivo taskteen.db)");
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log("✅ Banco de dados SQLite pronto (arquivo taskteen.db)");
+  });
+}
+module.exports = app;
